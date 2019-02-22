@@ -20,7 +20,7 @@ chai.use(chaiAsPromised)
 /*************************** FUNCTION TEST ALL ROUTES *********************************/
 /**************************************************************************************/
 
-const testRoutes = (book) => {
+const testRoutes = (book, all) => {
   let books =  book ? [book] : []
 
   it('GET BOOK', (done) => {
@@ -49,48 +49,49 @@ const testRoutes = (book) => {
           })
   })
 
-  it('GET BOOK ID ', (done) => {
-      chai
-          .request(server)
-          .get('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
-          .send(book)
-          .end((err, res) => {
-              expect(res).to.have.status(200)
-              expect(res.body.message).to.be.a('string')
-              expect(res.body.message).equal('book fetched')
-              expect(res.body.book).to.be.a('object')
-              expect(res.body.book.title).to.be.a('string')
-              expect(res.body.book.years).to.be.a('number')
-              done()
-          })
-  })
+  if(all){
+    it('GET BOOK ID', (done) => {
+        chai
+            .request(server)
+            .get('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
+            .send(book)
+            .end((err, res) => {
+                expect(res).to.have.status(200)
+                expect(res.body.message).to.be.a('string')
+                expect(res.body.message).equal('book fetched')
+                expect(res.body.book).to.be.a('object')
+                expect(res.body.book.title).to.be.a('string')
+                expect(res.body.book.years).to.be.a('number')
+                done()
+            })
+    })
 
-  it('PUT BOOK ID', (done) => {
-      chai
-          .request(server)
-          .put('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
-          .send(books)
-          .end((err, res) => {
-              expect(res).to.have.status(200)
-              expect(res.body.message).to.be.a('string')
-              expect(res.body.message).equal('book successfully updated')
-              done()
-          })
-  })
+    it('PUT BOOK ID', (done) => {
+        chai
+            .request(server)
+            .put('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
+            .send(books)
+            .end((err, res) => {
+                expect(res).to.have.status(200)
+                expect(res.body.message).to.be.a('string')
+                expect(res.body.message).equal('book successfully updated')
+                done()
+            })
+    })
 
-  it('DELETE BOOK ID', (done) => {
-      chai
-          .request(server)
-          .delete('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
-          .send(books)
-          .end((err, res) => {
-              expect(res).to.have.status(200)
-              expect(res.body.message).to.be.a('string')
-              expect(res.body.message).equal('book successfully deleted')
-              done()
-          })
-  })
-
+    it('DELETE BOOK ID', (done) => {
+        chai
+            .request(server)
+            .delete('/book/0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9')
+            .send(books)
+            .end((err, res) => {
+                expect(res).to.have.status(200)
+                expect(res.body.message).to.be.a('string')
+                expect(res.body.message).equal('book successfully deleted')
+                done()
+            })
+    })
+  }
 }
 
 /*************************************************************************************/
@@ -109,7 +110,7 @@ describe('Test intégration (Empty database)', () => {
         resetDatabase(path.join(__dirname, '../data/books.json'), emptyBooks)
     })
 
-    testRoutes(book)
+    testRoutes(book, false)
 })
 
 
@@ -128,5 +129,5 @@ describe('Test intégration (Not empty database)', () => {
         if(!emptyBooks.books.length) emptyBooks.books = books
     })
 
-    testRoutes(book)
+    testRoutes(book, true)
 })
