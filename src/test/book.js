@@ -1,16 +1,16 @@
-import chai, { expect } from 'chai';
-import chaiHttp from 'chai-http';
-import chaiNock from 'chai-nock';
-import chaiAsPromised from 'chai-as-promised';
-import path from 'path';
-import nock from 'nock';
+import chai, { expect } from 'chai'
+import chaiHttp from 'chai-http'
+import chaiNock from 'chai-nock'
+import chaiAsPromised from 'chai-as-promised'
+import path from 'path'
+import nock from 'nock'
 
-import server from '../server';
-import resetDatabase from '../utils/resetDatabase';
+import server from '../server'
+import resetDatabase from '../utils/resetDatabase'
 
-chai.use(chaiHttp);
-chai.use(chaiNock);
-chai.use(chaiAsPromised);
+chai.use(chaiHttp)
+chai.use(chaiNock)
+chai.use(chaiAsPromised)
 
 // tout les packages et fonction nescessaire au test sont importé ici, bon courage
 
@@ -33,7 +33,7 @@ const testRoutes = (book) => {
               expect(res.body.books).to.be.a('array')
               expect(res.body.books.length).to.equal(0)
               done()
-          });
+          })
   })
 
   it('POST BOOK', (done) => {
@@ -46,7 +46,7 @@ const testRoutes = (book) => {
             expect(res.body.message).to.be.a('string')
             expect(res.body.message).to.equal('book successfully added')
             done()
-          });
+          })
   })
 
   it('GET BOOK ID ', (done) => {
@@ -62,7 +62,7 @@ const testRoutes = (book) => {
               expect(res.body.book.title).to.be.a('string')
               expect(res.body.book.years).to.be.a('number')
               done()
-          });
+          })
   })
 
   it('PUT BOOK ID', (done) => {
@@ -75,7 +75,7 @@ const testRoutes = (book) => {
               expect(res.body.message).to.be.a('string')
               expect(res.body.message).equal('book successfully updated')
               done()
-          });
+          })
   })
 
   it('DELETE BOOK ID', (done) => {
@@ -88,7 +88,7 @@ const testRoutes = (book) => {
               expect(res.body.message).to.be.a('string')
               expect(res.body.message).equal('book successfully deleted')
               done()
-          });
+          })
   })
 
 }
@@ -98,7 +98,7 @@ const testRoutes = (book) => {
 /*************************************************************************************/
 
 describe('Test intégration (Empty database)', () => {
-  console.log("Test intégration (Empty database)");
+  console.log("Test intégration (Empty database)")
 
     let emptyBooks = {
         books : []
@@ -110,23 +110,23 @@ describe('Test intégration (Empty database)', () => {
     })
 
     testRoutes(book)
-});
+})
 
 
 describe('Test intégration (Not empty database)', () => {
-  console.log("Test intégration (Not empty database)");
+  console.log("Test intégration (Not empty database)")
 
     let emptyBooks = {
-        books : [{}]
+        books : []
     }
 
     let book = {"id":"0db0b43e-dddb-47ad-9b4a-e5fe9ec7c2a9","title":"Coco raconte Channel 2","years":1990,"pages":400}
-    let books = [book];
+    let books = [book]
 
     beforeEach(() => {
         resetDatabase(path.join(__dirname, '../data/books.json'), emptyBooks)
-        if(!emptyBooks.books[0].id) emptyBooks.books = books
+        if(!emptyBooks.books.length) emptyBooks.books = books
     })
 
     testRoutes(book)
-});
+})
