@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
 import book from './routes/books';
+
 // import config from 'config';
 
 let port = 8080;
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
+
 
 app.get('/', (req, res) => res.json({ message: 'Welcome to our Bookstore!' }));
 
