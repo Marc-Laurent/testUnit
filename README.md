@@ -2,7 +2,7 @@
 
 tesUnit is a small exercise of unit testing and automatic deployment on a bookstore API.
 
-## Command
+## Commands
 
 ```bash
 npm start
